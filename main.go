@@ -4,7 +4,7 @@ import (
 	"github.com/wangjinh/cart/common"
 	"github.com/wangjinh/cart/domain/repository"
 	"github.com/wangjinh/cart/handler"
-	cart "github.com/wangjinh/cart/proto/cart"
+	"github.com/wangjinh/cart/proto/cart"
 	"github.com/jinzhu/gorm"
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
@@ -73,7 +73,7 @@ func main() {
 	cartDataService := service2.NewCartDateService(repository.NewCartRepository(db))
 
 	// Register Handler， 将微服务的接口操作注册到处理器中
-	cart.RegisterCartHandler(service.Server(), &handler.Cart{
+	go_micro_service_cart.RegisterCartHandler(service.Server(), &handler.Cart{
 		cartDataService,
 	})
 
