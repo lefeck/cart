@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package go.micro.service.cart;
+
+service Cart {
+	//添加购物车添加，添加信息，返回id和msg
+	rpc AddCart(CartInfo) returns (ResponseAdd) {}
+	//清除购物车，通过ID清除
+	rpc CleanCart(Clean) returns (Response) {}
+	//增加商品
+	rpc Incr(Item) returns (Response) {}
+	//减少商品
+	rpc Decr(Item) returns (Response) {}
+	//删除商品根据购物车id
+	rpc DeleteItemByID(CartID) returns (Response) {}
+	//获取所有购物车商品，通过用户id，返回所有商品
+	rpc GetAll(CartFindAll) returns (CartAll) {}
+}
+
+message CartInfo {
+	int64 id =1;
+	int64 user_id = 2;
+	int64 product_id =3;
+	int64 size_id =4;
+	int64 num=5;
+}
+
+message ResponseAdd {
+	int64 cart_id =1;
+	string  msg =2;
+}
+
+message Clean {
+	int64 user_id = 1;
+}
+
+message Request {
+	string name = 1;
+}
+
+message Response {
+	string msg = 1;
+}
+
+message Item {
+	int64 id =1;
+	int64 change_num =2;
+}
+message CartID {
+	int64 id =1;
+}
+
+message  CartFindAll {
+	int64 user_id =1;
+}
+message CartAll {
+	repeated CartInfo cart_info =1;
+}
