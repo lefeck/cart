@@ -1,4 +1,4 @@
-module github.com/wangjinh/cart
+module github.com/asveg/cart
 
 go 1.13
 
@@ -6,6 +6,7 @@ go 1.13
 // see https://github.com/etcd-io/etcd/issues/11154 and https://github.com/etcd-io/etcd/issues/11931.
 
 require (
+	github.com/HdrHistogram/hdrhistogram-go v1.1.0 // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/jinzhu/gorm v1.9.16
 	github.com/micro/go-micro/v2 v2.9.1

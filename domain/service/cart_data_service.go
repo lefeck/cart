@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/wangjinh/cart/domain/model"
-	"github.com/wangjinh/cart/domain/repository"
+	"github.com/asveg/cart/domain/model"
+	"github.com/asveg/cart/domain/repository"
 
 )
 

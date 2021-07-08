@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/wangjinh/cart/common"
-	"github.com/wangjinh/cart/domain/repository"
-	"github.com/wangjinh/cart/handler"
-	"github.com/wangjinh/cart/proto/cart"
+	"github.com/asveg/cart/common"
+	"github.com/asveg/cart/domain/repository"
+	"github.com/asveg/cart/handler"
+	cart "github.com/asveg/cart/proto/cart"
 	"github.com/jinzhu/gorm"
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
@@ -13,8 +13,9 @@ import (
 	ratelimit "github.com/micro/go-plugins/wrapper/ratelimiter/uber/v2"
 	opentracing2 "github.com/micro/go-plugins/wrapper/trace/opentracing/v2"
 	"github.com/opentracing/opentracing-go"
+	//mysql驱动，容易忘记！！！
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	service2 "github.com/wangjinh/cart/domain/service"
+	srv "github.com/asveg/cart/domain/service"
 	"strconv"
 )
 var QPS = 100
@@ -48,6 +49,7 @@ func main() {
 		log.Error(err)
 	}
 	defer db.Close()
+	//禁止副表，默认会在表名后加s
 	db.SingularTable(true)
 
 	//initialise database
@@ -60,9 +62,12 @@ func main() {
 	service := micro.NewService(
 		micro.Name("go.micro.service.cart"),
 		micro.Version("latest"),
+		//注册consul
 		micro.Registry(consul),
 		micro.Address("0.0.0.0:8708"),
+		//链路追踪
 		micro.WrapHandler(opentracing2.NewHandlerWrapper(opentracing.GlobalTracer())),
+		//限流
 		micro.WrapHandler(ratelimit.NewHandlerWrapper(QPS)),
 		)
 
@@ -70,10 +75,10 @@ func main() {
 	service.Init()
 
 	//连接数据库
-	cartDataService := service2.NewCartDateService(repository.NewCartRepository(db))
+	cartDataService := srv.NewCartDateService(repository.NewCartRepository(db))
 
 	// Register Handler， 将微服务的接口操作注册到处理器中
-	go_micro_service_cart.RegisterCartHandler(service.Server(), &handler.Cart{
+	cart.RegisterCartHandler(service.Server(), &handler.Cart{
 		cartDataService,
 	})
 

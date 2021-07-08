@@ -5,7 +5,7 @@ package go.micro.service.cart;
 service Cart {
 	//添加购物车添加，添加信息，返回id和msg
 	rpc AddCart(CartInfo) returns (ResponseAdd) {}
-	//清除购物车，通过ID清除
+	//清空购物车，通过ID清空
 	rpc CleanCart(Clean) returns (Response) {}
 	//增加商品
 	rpc Incr(Item) returns (Response) {}

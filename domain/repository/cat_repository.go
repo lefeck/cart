@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/wangjinh/cart/domain/model"
+	"github.com/asveg/cart/domain/model"
 	"github.com/jinzhu/gorm"
 	"errors"
 )
@@ -42,7 +42,7 @@ func (c *CartRepository) CreateCart(cart *model.Cart) (cartid int64, err error){
 	}
 	return cart.ID,nil
 }
-//查找一个ID
+//查找ID
 func (c *CartRepository) FindCartByID(cartid int64) (cart *model.Cart, err error) {
 	Cart := &model.Cart{}
 	return cart,c.mysql.First(Cart,cartid).Error
@@ -59,16 +59,16 @@ func (c *CartRepository) UpdateCart(cart *model.Cart) error {
 func (c *CartRepository) FindAll(UserID int64) (cartAll []model.Cart, err error) {
 	return cartAll,c.mysql.Where("user_id=?",UserID).Find(&cartAll).Error
 }
-
+// 清空购物车，删除购物车中user_id
 func (c *CartRepository) CleanCart(userID int64) error {
 	return c.mysql.Where("user_id=?",userID).Delete(&model.Cart{}).Error
 }
-
+//添加商品数量
 func (c *CartRepository) Incr(cartID int64, num int64) error {
 	cart:=&model.Cart{ID: cartID}
 	return c.mysql.Model(cart).UpdateColumn("num",gorm.Expr("num + ?",num)).Error
 }
-
+//减少商品数量
 func (c *CartRepository) Decr(cartID int64, num int64) error {
 	cart:=&model.Cart{ID: cartID}
 	db :=c.mysql.Model(cart).Where("num >= ?",num).UpdateColumn("num",gorm.Expr("num - ?",num))
