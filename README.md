@@ -31,7 +31,7 @@ docker run --name hystrix-dashboard -d -p 9002:9002 mlabouardy/hystrix-dashboard
 
 # 负载均衡作用
 * 提高系统横向扩展性
-* 支持： http，https，tpc，udp
+* 支持： http，https，tcp，udp
 * 主要算法：轮训算法和随机算法，默认是随机算法。
   
   ![LOADBALANCE](https://github.com/asveg/picture/blob/master/loadbalance.png)
